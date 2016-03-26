@@ -63,6 +63,17 @@ main_page_head = '''
             // reliable way to ensure the video stops playing in IE
             $("#trailer-video-container").empty();
         });
+        //  Show description when mouse enters, hide when mouse leaves
+        $(document).ready(function(){
+            $('.movie-tile').on({
+                mouseenter: function(){
+                    $('.hidendes').show();
+                },  
+                mouseleave: function(){
+                    $('.hidendes').hide();
+                }
+            });
+        });
         // Start playing the video whenever the trailer modal is opened
         $(document).on('click', '.movie-tile', function (event) {
             var trailerYouTubeId = $(this).attr('data-trailer-youtube-id')
@@ -73,6 +84,10 @@ main_page_head = '''
               'src': sourceUrl,
               'frameborder': 0
             }));
+        });
+        // hiden at first
+        $(document).ready(function () {
+          $('.hidendes').hide();
         });
         // Animate in the movies when the page loads
         $(document).ready(function () {
@@ -123,6 +138,7 @@ movie_tile_content = '''
 <div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
     <img src="{poster_image_url}" width="220" height="342">
     <h2>{movie_title}</h2>
+    <p class="hidendes">{movie_description}</p>
 </div>
 '''
 
@@ -143,7 +159,8 @@ def create_movie_tiles_content(movies):
         content += movie_tile_content.format(
             movie_title=movie.title,
             poster_image_url=movie.poster_image_url,
-            trailer_youtube_id=trailer_youtube_id
+            trailer_youtube_id=trailer_youtube_id,
+            movie_description=movie.description
         )
     return content
 
